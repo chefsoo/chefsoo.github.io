@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>On the Wrist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --muted: #6b6b66;
+      --faint: #e8e6e0;
+      --bg: #f5f3ee;
+      --white: #ffffff;
+      --accent: #b08c5a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 3rem 2rem 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    header .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    header nav a {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+
+    header nav a:hover { color: var(--ink); }
+
+    .hero {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 2rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 320px;
+    }
+
+    .watch-frame {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      background: var(--faint);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .watch-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .watch-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+    }
+
+    .watch-placeholder svg {
+      opacity: 0.4;
+    }
+
+    .watch-placeholder span {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      max-width: 780px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      border: none;
+      border-top: 1px solid var(--faint);
+    }
+
+    .specs {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .specs-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .spec-item {}
+
+    .spec-key {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .spec-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    .about {
+      background: var(--white);
+      border-top: 1px solid var(--faint);
+    }
+
+    .about-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.3rem;
+    }
+
+    .about-text p {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    footer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--faint);
+    }
+
+    footer span {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 2rem;
+      }
+
+      .hero-text { order: 2; }
+      .watch-frame { order: 1; max-width: 260px; }
+
+      .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="site-name">On the Wrist</span>
+    <nav>
+      <a href="#specs">Specs</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Time,<br /><em>considered.</em></h1>
+      <p>
+        A personal archive of one collector's obsession with mechanical horology.
+        One watch. Every detail.
+      </p>
+    </div>
+    <div class="watch-frame">
+      <!--
+        TO ADD YOUR PHOTO:
+        Replace this entire <div class="watch-placeholder"> block with:
+        <img src="your-photo.jpg" alt="Your watch name" />
+      -->
+      <div class="watch-placeholder">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="22" stroke="#6b6b66" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="17" stroke="#6b6b66" stroke-width="0.75"/>
+          <line x1="32" y1="15" x2="32" y2="19" stroke="#6b6b66" stroke-width="1.5"/>
+          <line x1="32" y1="45" x2="32" y2="49" stroke="#6b6b66" stroke-width="1.5"/>
+          <line x1="15" y1="32" x2="19" y2="32" stroke="#6b6b66" stroke-width="1.5"/>
+          <line x1="45" y1="32" x2="49" y2="32" stroke="#6b6b66" stroke-width="1.5"/>
+          <line x1="32" y1="32" x2="32" y2="22" stroke="#6b6b66" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="32" y1="32" x2="40" y2="36" stroke="#6b6b66" stroke-width="1" stroke-linecap="round"/>
+          <rect x="28" y="8" width="8" height="4" rx="1" stroke="#6b6b66" stroke-width="0.75"/>
+          <rect x="28" y="52" width="8" height="4" rx="1" stroke="#6b6b66" stroke-width="0.75"/>
+        </svg>
+        <span>Add your photo</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" id="specs" />
+
+  <section class="specs">
+    <p class="specs-label">Specifications</p>
+    <div class="specs-grid">
+      <div class="spec-item">
+        <p class="spec-key">Reference</p>
+        <p class="spec-value">Your ref here</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Year</p>
+        <p class="spec-value">20XX</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Movement</p>
+        <p class="spec-value">Automatic</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Case size</p>
+        <p class="spec-value">40mm</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Case material</p>
+        <p class="spec-value">Steel</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Dial</p>
+        <p class="spec-value">Black</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Crystal</p>
+        <p class="spec-value">Sapphire</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Water resistance</p>
+        <p class="spec-value">100m</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Bracelet</p>
+        <p class="spec-value">Integrated</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-inner">
+      <p class="about-label">About</p>
+      <div class="about-text">
+        <p>
+          Write a sentence or two about why this watch matters to you.
+          Where did you find it? What drew you to it?
+        </p>
+        <p>
+          This is your space to share the story behind the watch.
+          Keep it personal. Keep it honest.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>On the Wrist</span>
+    <span>Your name &mdash; 2026</span>
+  </footer>
+
+</body>
+</html>
