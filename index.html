@@ -168,6 +168,68 @@
       color: var(--muted);
     }
 
+    /* Password gate */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    #gate.hidden { display: none; }
+
+    .gate-inner {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .gate-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 2.5rem;
+    }
+
+    .gate-input {
+      display: block;
+      width: 220px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--faint);
+      padding: 0.6rem 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.2s;
+      margin: 0 auto 0.75rem;
+    }
+
+    .gate-input::placeholder { color: var(--muted); }
+    .gate-input:focus { border-color: var(--accent); }
+
+    .gate-error {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+      min-height: 1.2em;
+    }
+
+    .gate-error.visible { opacity: 1; }
+
     @media (max-width: 500px) {
       .project-item {
         grid-template-columns: 1fr;
@@ -181,6 +243,14 @@
   </style>
 </head>
 <body>
+
+  <div id="gate">
+    <div class="gate-inner">
+      <span class="gate-name">chefsoo</span>
+      <input id="gate-input" class="gate-input" type="password" placeholder="password" autocomplete="off" />
+      <p id="gate-error" class="gate-error">incorrect</p>
+    </div>
+  </div>
 
   <header>
     <span class="site-name">chefsoo</span>
@@ -235,6 +305,38 @@
     <span>chefsoo</span>
     <span>2026</span>
   </footer>
+
+  <script>
+    const PASSWORD = 'soochef';
+    const SESSION_KEY = 'chefsoo_auth';
+    const gate = document.getElementById('gate');
+    const input = document.getElementById('gate-input');
+    const error = document.getElementById('gate-error');
+
+    function unlock() {
+      gate.classList.add('hidden');
+      input.value = '';
+    }
+
+    // Stay unlocked for the session
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      unlock();
+    }
+
+    input.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      if (input.value === PASSWORD) {
+        sessionStorage.setItem(SESSION_KEY, '1');
+        unlock();
+      } else {
+        error.classList.add('visible');
+        input.value = '';
+        setTimeout(() => error.classList.remove('visible'), 2000);
+      }
+    });
+
+    input.focus();
+  </script>
 
 </body>
 </html>
