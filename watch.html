@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>On the Wrist — chefsoo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --muted: #6b6b66;
+      --faint: #e8e6e0;
+      --bg: #f5f3ee;
+      --white: #ffffff;
+      --accent: #b08c5a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 3rem 2rem 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    header .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    header nav a {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+
+    header nav a:hover { color: var(--ink); }
+
+    .hero {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 2rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 320px;
+    }
+
+    .watch-frame {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      background: var(--faint);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .watch-frame img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .watch-frame img.active {
+      opacity: 1;
+    }
+
+    .divider {
+      max-width: 780px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      border: none;
+      border-top: 1px solid var(--faint);
+    }
+
+    .specs {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .specs-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .spec-key {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .spec-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    .about {
+      background: var(--white);
+      border-top: 1px solid var(--faint);
+    }
+
+    .about-inner {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.3rem;
+    }
+
+    .about-text p {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    footer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--faint);
+    }
+
+    footer a {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--ink); }
+
+    footer span {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 2rem;
+      }
+
+      .hero-text { order: 2; }
+      .watch-frame { order: 1; max-width: 260px; }
+
+      .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="site-name">chefsoo</a>
+    <nav>
+      <a href="#specs">Specs</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Time<br /><em>after time.</em></h1>
+    </div>
+    <div class="watch-frame" id="watch-slider">
+      <img src="my-watch.jpg" alt="Watch photo 1" class="active" />
+      <img src="reddit-watch.png" alt="Watch photo 2" />
+    </div>
+  </section>
+
+  <hr class="divider" id="specs" />
+
+  <section class="specs">
+    <p class="specs-label">Specifications</p>
+    <div class="specs-grid">
+      <div class="spec-item">
+        <p class="spec-key">Year</p>
+        <p class="spec-value">2023</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Movement</p>
+        <p class="spec-value">NH35</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Case size</p>
+        <p class="spec-value">39mm</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Case material</p>
+        <p class="spec-value">Steel</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Dial</p>
+        <p class="spec-value">Black</p>
+      </div>
+      <div class="spec-item">
+        <p class="spec-key">Crystal</p>
+        <p class="spec-value">Sapphire</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-inner">
+      <p class="about-label">About</p>
+      <div class="about-text">
+        <p>
+          My first build, after months of lurking on SeikoMods. A proper
+          franken: submariner dial, Black Bay bezel, NH35 movement — assembled
+          by hand, one very fiddly part at a time.
+        </p>
+        <p>
+          The seconds hand nearly broke me. So did the dial feet. But that's
+          the point, isn't it.
+        </p>
+        <p>
+          On a leather NATO for formal occasions. Marine nationale as the
+          daily driver.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <a href="index.html">All projects</a>
+    <span>chefsoo &mdash; 2026</span>
+  </footer>
+
+  <script>
+    const slider = document.getElementById('watch-slider');
+    const images = slider.querySelectorAll('img');
+    let current = 0;
+
+    slider.addEventListener('click', () => {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    });
+  </script>
+</body>
+</html>
