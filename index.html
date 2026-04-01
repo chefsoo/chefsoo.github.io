@@ -94,16 +94,22 @@
       background: var(--faint);
       border-radius: 2px;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      cursor: pointer;
     }
 
     .watch-frame img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .watch-frame img.active {
+      opacity: 1;
     }
 
     .watch-placeholder {
@@ -249,26 +255,9 @@
       <h1>Time<br /><em>after time.</em></h1>
 
     </div>
-    <div class="watch-frame">
-      <!--
-        TO ADD YOUR PHOTO:
-        Replace this entire <div class="watch-placeholder"> block with:
-        <img src="your-photo.jpg" alt="Your watch name" />
-      -->
-      <img src="reddit-watch.png" alt="inspo post" />
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="32" r="22" stroke="#6b6b66" stroke-width="1.5"/>
-          <circle cx="32" cy="32" r="17" stroke="#6b6b66" stroke-width="0.75"/>
-          <line x1="32" y1="15" x2="32" y2="19" stroke="#6b6b66" stroke-width="1.5"/>
-          <line x1="32" y1="45" x2="32" y2="49" stroke="#6b6b66" stroke-width="1.5"/>
-          <line x1="15" y1="32" x2="19" y2="32" stroke="#6b6b66" stroke-width="1.5"/>
-          <line x1="45" y1="32" x2="49" y2="32" stroke="#6b6b66" stroke-width="1.5"/>
-          <line x1="32" y1="32" x2="32" y2="22" stroke="#6b6b66" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="32" y1="32" x2="40" y2="36" stroke="#6b6b66" stroke-width="1" stroke-linecap="round"/>
-          <rect x="28" y="8" width="8" height="4" rx="1" stroke="#6b6b66" stroke-width="0.75"/>
-          <rect x="28" y="52" width="8" height="4" rx="1" stroke="#6b6b66" stroke-width="0.75"/>
-        </svg>
-      </div>
+    <div class="watch-frame" id="watch-slider">
+      <img src="my-watch.jpg" alt="Watch photo 1" class="active" />
+      <img src="reddit-watch.png" alt="Watch photo 2" />
     </div>
   </section>
 
@@ -330,5 +319,16 @@
     <span>chefsoo &mdash; 2026</span>
   </footer>
 
+  <script>
+    const slider = document.getElementById('watch-slider');
+    const images = slider.querySelectorAll('img');
+    let current = 0;
+
+    slider.addEventListener('click', () => {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    });
+  </script>
 </body>
 </html>
