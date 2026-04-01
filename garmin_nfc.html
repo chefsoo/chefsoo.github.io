@@ -52,7 +52,7 @@
     .main {
       max-width: 780px;
       margin: 0 auto;
-      padding: 5rem 2rem;
+      padding: 4rem 2rem 5rem;
       width: 100%;
       flex: 1;
     }
@@ -79,36 +79,120 @@
       color: var(--accent);
     }
 
-    .placeholder-text {
+    .story {
       font-size: 0.9rem;
-      line-height: 1.8;
+      line-height: 1.9;
       color: var(--muted);
-      max-width: 420px;
+      max-width: 520px;
     }
 
-    .status-bar {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--faint);
+    .story p { margin-bottom: 1rem; }
+    .story p:last-child { margin-bottom: 0; }
+
+    /* Image placeholder */
+    .img-placeholder {
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 4 / 3;
+      background: var(--faint);
+      border-radius: 2px;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      justify-content: center;
+      margin: 3rem 0;
     }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--muted);
-      opacity: 0.5;
+    .img-placeholder span {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.6;
     }
 
-    .status-text {
-      font-size: 0.75rem;
+    /* Divider */
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--faint);
+      margin: 3.5rem 0;
+    }
+
+    /* Gear + extras sections */
+    .meta-section {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 2.5rem;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+
+    .gear-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .gear-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.5rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--faint);
+      align-items: baseline;
+    }
+
+    .gear-item:last-child {
+      border-bottom: 1px solid var(--faint);
+    }
+
+    .gear-key {
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
     }
+
+    .gear-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    .extras-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .extras-item {
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--faint);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .extras-item:last-child {
+      border-bottom: 1px solid var(--faint);
+    }
+
+    .extras-item a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .extras-item a:hover { opacity: 0.7; }
 
     footer {
       max-width: 780px;
@@ -136,6 +220,17 @@
       letter-spacing: 0.06em;
       color: var(--muted);
     }
+
+    @media (max-width: 500px) {
+      .meta-section {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .gear-item {
+        grid-template-columns: 70px 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -147,14 +242,66 @@
   <main class="main">
     <p class="eyebrow">In progress</p>
     <h1>Garmin<br /><em>NFC.</em></h1>
-    <p class="placeholder-text">
-      Garmin Pay exists. It works fine for payments. This is about making it
-      do something more interesting. Write-up in progress.
-    </p>
-    <div class="status-bar">
-      <div class="status-dot"></div>
-      <span class="status-text">Page coming soon</span>
+
+    <div class="story">
+      <p>
+        After a 12-year hiatus, I started running again in November 2025. Joined
+        the run team at my gym (shout out Coach Jon) and quickly landed on a
+        simple goal: minimize what I carry on solo runs.
+      </p>
+      <p>
+        The primary investment was a Garmin Forerunner 255 Music, an older model
+        with a MiP display that handles both tracking and playback. My building
+        entry runs on a passcode, so keys were already out of the picture. The
+        remaining friction: my fob for other access points.
+      </p>
+      <p>
+        The fix was a 10mm NFC sticker embedded into a nylon watch strap, letting
+        me scan in with a wrist tap. Clean, minimal, no extra carry. NFC has
+        turned out to be a rabbit hole worth going down, and this is just the
+        first project out of it.
+      </p>
     </div>
+
+    <div class="img-placeholder">
+      <span>Placeholder image</span>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="meta-section">
+      <p class="meta-label">Current gear</p>
+      <ul class="gear-list">
+        <li class="gear-item">
+          <span class="gear-key">Shoes</span>
+          <span class="gear-value">Altra Torin 8</span>
+        </li>
+        <li class="gear-item">
+          <span class="gear-key">Watch</span>
+          <span class="gear-value">Garmin Forerunner 255 Music</span>
+        </li>
+        <li class="gear-item">
+          <span class="gear-key">Audio</span>
+          <span class="gear-value">Shokz OpenRun SE</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="meta-section">
+      <p class="meta-label">On rotation</p>
+      <div class="extras-list">
+        <div class="extras-item">
+          <a href="https://www.youtube.com/watch?v=AQOy2hud5Gs" target="_blank" rel="noopener">Kpop - UKG/House BBQ DJ Set - crazycruzau</a>
+        </div>
+        <div class="extras-item">
+          <a href="https://www.youtube.com/watch?v=b0SrmA01Qpk" target="_blank" rel="noopener">Essential Mix 1997 - Daft Punk</a>
+        </div>
+        <div class="extras-item">
+          <a href="https://www.youtube.com/@alexpanmusic" target="_blank" rel="noopener">Kpop House - Alex Pan</a>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <footer>
