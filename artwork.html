@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artwork — chefsoo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --muted: #6b6b66;
+      --faint: #e8e6e0;
+      --bg: #f5f3ee;
+      --white: #ffffff;
+      --accent: #b08c5a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 3rem 2rem 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    header a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .intro {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 3.5rem;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .grid-item {
+      aspect-ratio: 1 / 1;
+      background: var(--faint);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: opacity 0.2s;
+    }
+
+    .grid-item:hover { opacity: 0.85; }
+
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .grid-item .placeholder-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 24, 0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 2rem;
+    }
+
+    #lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lb-inner {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 2.5rem;
+      max-width: 900px;
+      width: 100%;
+      align-items: center;
+    }
+
+    /* Image column */
+    .lb-image-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .lb-image {
+      background: #111;
+      border-radius: 2px;
+      overflow: hidden;
+      max-height: 72vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-image img {
+      width: 100%;
+      max-height: 72vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lb-image .placeholder-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #666;
+      padding: 4rem 2rem;
+    }
+
+    /* Album dots */
+    .lb-dots {
+      display: flex;
+      gap: 0.4rem;
+      justify-content: center;
+      min-height: 8px;
+    }
+
+    .lb-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #444;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .lb-dot.active { background: var(--accent); }
+
+    /* Album swipe nav (within one artwork) */
+    .lb-album-nav {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .lb-album-nav button {
+      all: unset;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .lb-album-nav button:hover { color: #aaa; }
+    .lb-album-nav button:disabled { opacity: 0.2; cursor: default; }
+
+    /* Info column */
+    .lb-info {
+      color: var(--faint);
+    }
+
+    .lb-artist {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    .lb-artist a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .lb-artist a:hover { border-color: var(--accent); }
+
+    .lb-medium {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 0.3rem;
+    }
+
+    .lb-year {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .lb-desc {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #9a9a94;
+    }
+
+    /* Between-artwork navigation */
+    .lb-work-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .lb-work-nav button {
+      all: unset;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .lb-work-nav button:hover { color: var(--faint); }
+
+    .lb-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      all: unset;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .lb-close:hover { color: var(--faint); }
+
+    footer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--faint);
+    }
+
+    footer a {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--ink); }
+
+    footer span {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+
+      .lb-inner { grid-template-columns: 1fr; }
+
+      .lb-info { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html">chefsoo</a>
+  </header>
+
+  <main class="main">
+    <p class="eyebrow">Collected</p>
+    <h1>Art &amp;<br /><em>illustration.</em></h1>
+    <p class="intro">
+      Things that stopped me mid-scroll. A mix of artists and styles, collected
+      without a particular theme — just work that stuck. You'll notice many of
+      the artists are Pinoy.
+    </p>
+
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div id="lightbox">
+    <button class="lb-close" id="lb-close">Close</button>
+    <div class="lb-inner">
+
+      <div class="lb-image-col">
+        <div class="lb-image" id="lb-image"></div>
+        <div class="lb-dots" id="lb-dots"></div>
+        <div class="lb-album-nav" id="lb-album-nav">
+          <button id="lb-img-prev">Prev</button>
+          <button id="lb-img-next">Next</button>
+        </div>
+      </div>
+
+      <div class="lb-info">
+        <p class="lb-artist" id="lb-artist"></p>
+        <p class="lb-medium" id="lb-medium"></p>
+        <p class="lb-year" id="lb-year"></p>
+        <p class="lb-desc" id="lb-desc"></p>
+        <div class="lb-work-nav">
+          <button id="lb-work-prev">Prev work</button>
+          <button id="lb-work-next">Next work</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <a href="index.html">All projects</a>
+    <span>chefsoo &mdash; 2026</span>
+  </footer>
+
+  <script>
+    // -------------------------------------------------------
+    // ARTWORK DATA
+    // images: first entry is the primary (shown in grid).
+    //         add more entries to create an album in the lightbox.
+    // url:    links the artist name; set to null if unknown.
+    // -------------------------------------------------------
+    const ARTWORK = [
+      {
+        images: [
+          "artwork/millennium_actress.webp",
+          // "artwork/millennium_actress_secondary.jpg"  // add secondary image path here
+        ],
+        artist: "Rosemary Valero-O'Connell",
+        url: null,
+        medium: "Illustration",
+        year: "2026",
+        description: "MoCCA Art Fest 2026 had three poster designs for Perfect Blue. This one, for Millennium Actress, was the one that stopped me. It's my favorite Satoshi Kon film — lighter, more hopeful than Perfect Blue, and this illustration captures that."
+      },
+      {
+        images: [
+          "artwork/alleyway.png",
+          // "artwork/alleyway_secondary.jpg"
+        ],
+        artist: "Christian Blaza",
+        url: null,
+        medium: "Illustration",
+        year: "2024",
+        description: "Picked this up at MoCCA Art Fest 2024. Something about it reads like a still from an old Japanese film. This was also the year we started the tradition of heading to Ootoya after the fest."
+      },
+      {
+        images: [
+          "artwork/halohalo.png",
+          // "artwork/halohalo_secondary.jpg"
+        ],
+        artist: "Casielle Santos-Gaerlan",
+        url: null,
+        medium: "Painting",
+        year: "2025",
+        description: "We caught Casielle's show at From Here to Sunday. I had my eye on a painted version of the halo halo — just the glass, no background. I was going to commission it, but M got there first and made it a gift."
+      },
+      {
+        images: [
+          "artwork/mango.avif",
+          // "artwork/mango_secondary.jpg"
+        ],
+        artist: "Casielle Santos-Gaerlan",
+        url: null,
+        medium: "Illustration",
+        year: "2025",
+        description: "My favorite fruit. Mangos anywhere else are fine. Mangos in the Philippines, especially from my uncle's backyard, are something else entirely."
+      },
+      {
+        images: [
+          "artwork/peoplepantry_chinese.webp",
+          // "artwork/peoplepantry_chinese_secondary.jpg"
+        ],
+        artist: "Lora Hlavsa",
+        url: null,
+        medium: "Illustration",
+        year: "2021",
+        description: "Part of Lora Hlavsa's People's Pantry series. The shrimp chips, oyster sauce, and sesame oil get me every time."
+      },
+      {
+        images: [
+          "artwork/peoplepantry_filipinx.webp",
+          // "artwork/peoplepantry_filipinx_secondary.jpg"
+        ],
+        artist: "Lora Hlavsa",
+        url: null,
+        medium: "Illustration",
+        year: "2021",
+        description: "Every item on this one is a direct line to my childhood. The only thing missing is Nagaraya."
+      },
+      {
+        images: [
+          "artwork/peoplepantry_japanese.webp",
+          // "artwork/peoplepantry_japanese_secondary.jpg"
+        ],
+        artist: "Lora Hlavsa",
+        url: null,
+        medium: "Illustration",
+        year: "2021",
+        description: "The Kewpie and the green background. That's it, that's the description."
+      }
+    ];
+    // -------------------------------------------------------
+
+    const grid = document.getElementById('grid');
+    const lightbox = document.getElementById('lightbox');
+    const lbImage = document.getElementById('lb-image');
+    const lbDots = document.getElementById('lb-dots');
+    const lbAlbumNav = document.getElementById('lb-album-nav');
+    const lbArtist = document.getElementById('lb-artist');
+    const lbMedium = document.getElementById('lb-medium');
+    const lbYear = document.getElementById('lb-year');
+    const lbDesc = document.getElementById('lb-desc');
+    const lbImgPrev = document.getElementById('lb-img-prev');
+    const lbImgNext = document.getElementById('lb-img-next');
+
+    let currentWork = 0;
+    let currentImg = 0;
+
+    function renderGrid() {
+      ARTWORK.forEach((item, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'grid-item';
+        const src = item.images[0];
+        if (src) {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = item.artist;
+          cell.appendChild(img);
+        } else {
+          const label = document.createElement('span');
+          label.className = 'placeholder-label';
+          label.textContent = 'Image';
+          cell.appendChild(label);
+        }
+        cell.addEventListener('click', () => openLightbox(i));
+        grid.appendChild(cell);
+      });
+    }
+
+    function openLightbox(workIndex) {
+      currentWork = workIndex;
+      currentImg = 0;
+      updateLightbox();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function updateLightbox() {
+      const item = ARTWORK[currentWork];
+      const images = item.images.filter(Boolean);
+      const src = images[currentImg];
+
+      // Image
+      if (src) {
+        lbImage.innerHTML = `<img src="${src}" alt="${item.artist}" />`;
+      } else {
+        lbImage.innerHTML = `<span class="placeholder-label">Image placeholder</span>`;
+      }
+
+      // Dots (only show if more than one image)
+      lbDots.innerHTML = '';
+      if (images.length > 1) {
+        images.forEach((_, i) => {
+          const dot = document.createElement('span');
+          dot.className = 'lb-dot' + (i === currentImg ? ' active' : '');
+          dot.addEventListener('click', () => { currentImg = i; updateLightbox(); });
+          lbDots.appendChild(dot);
+        });
+      }
+
+      // Album nav (only show if more than one image)
+      lbAlbumNav.style.display = images.length > 1 ? 'flex' : 'none';
+      lbImgPrev.disabled = currentImg === 0;
+      lbImgNext.disabled = currentImg === images.length - 1;
+
+      // Info
+      if (item.url) {
+        lbArtist.innerHTML = `<a href="${item.url}" target="_blank" rel="noopener">${item.artist}</a>`;
+      } else {
+        lbArtist.textContent = item.artist;
+      }
+      lbMedium.textContent = item.medium;
+      lbYear.textContent = item.year;
+      lbDesc.textContent = item.description;
+    }
+
+    // Album navigation (within one artwork)
+    lbImgPrev.addEventListener('click', () => {
+      const images = ARTWORK[currentWork].images.filter(Boolean);
+      if (currentImg > 0) { currentImg--; updateLightbox(); }
+    });
+
+    lbImgNext.addEventListener('click', () => {
+      const images = ARTWORK[currentWork].images.filter(Boolean);
+      if (currentImg < images.length - 1) { currentImg++; updateLightbox(); }
+    });
+
+    // Between-artwork navigation
+    document.getElementById('lb-work-prev').addEventListener('click', () => {
+      currentWork = (currentWork - 1 + ARTWORK.length) % ARTWORK.length;
+      currentImg = 0;
+      updateLightbox();
+    });
+
+    document.getElementById('lb-work-next').addEventListener('click', () => {
+      currentWork = (currentWork + 1) % ARTWORK.length;
+      currentImg = 0;
+      updateLightbox();
+    });
+
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      const images = ARTWORK[currentWork].images.filter(Boolean);
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') {
+        if (images.length > 1 && currentImg > 0) { currentImg--; updateLightbox(); }
+        else { currentWork = (currentWork - 1 + ARTWORK.length) % ARTWORK.length; currentImg = 0; updateLightbox(); }
+      }
+      if (e.key === 'ArrowRight') {
+        if (images.length > 1 && currentImg < images.length - 1) { currentImg++; updateLightbox(); }
+        else { currentWork = (currentWork + 1) % ARTWORK.length; currentImg = 0; updateLightbox(); }
+      }
+    });
+
+    renderGrid();
+  </script>
+
+</body>
+</html>
