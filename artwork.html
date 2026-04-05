@@ -181,6 +181,10 @@
       display: block;
     }
 
+    .lb-image.has-album {
+      cursor: pointer;
+    }
+
     .lb-image .placeholder-label {
       font-size: 0.65rem;
       letter-spacing: 0.12em;
@@ -403,10 +407,9 @@
       {
         images: [
           "artwork/millennium_actress.webp",
-          // "artwork/millennium_actress_secondary.jpg"  // add secondary image path here
         ],
         artist: "Rosemary Valero-O'Connell",
-        url: null,
+        url: "https://www.hirosemaryhello.com/",
         medium: "Illustration",
         year: "2026",
         description: "MoCCA Art Fest 2026 had three poster designs for Perfect Blue. This one, for Millennium Actress, was the one that stopped me. It's my favorite Satoshi Kon film — lighter, more hopeful than Perfect Blue, and this illustration captures that."
@@ -414,21 +417,40 @@
       {
         images: [
           "artwork/alleyway.png",
-          // "artwork/alleyway_secondary.jpg"
         ],
         artist: "Christian Blaza",
-        url: null,
+        url: "https://www.christianblaza.com/",
         medium: "Illustration",
         year: "2024",
-        description: "Picked this up at MoCCA Art Fest 2024. Something about it reads like a still from an old Japanese film. This was also the year we started the tradition of heading to Ootoya after the fest."
+        description: "Picked this up at MoCCA Art Fest 2024. Something about it reads like a still from an old Japanese film. This was also the year we started the tradition of heading to Ootoya after the fest. I'm tempted to buy the rest of the series."
+      },
+      {
+        images: [
+          "artwork/wren_ghost_shell.jpg",
+        ],
+        artist: "Wren McDonald",
+        url: "https://wrenmcdonald.com/",
+        medium: "Illustration",
+        year: "NA",
+        description: "Not in the collection — on the permanent wishlist. Every year at MoCCA I ask if this one is available. It never is."
+      },
+      {
+        images: [
+          "artwork/casper_manning.jpeg",
+        ],
+        artist: "Casper Manning",
+        url: "https://www.caspermanning.com/",
+        medium: "Illustration",
+        year: "2024",
+        description: "Picked this up at MoCCA Art Fest 2024. The riso print style, another atmospheric alleyway — it fits right into the collection."
       },
       {
         images: [
           "artwork/halohalo.png",
-          // "artwork/halohalo_secondary.jpg"
+          "artwork/halo_halo_illustration.avif"
         ],
         artist: "Casielle Santos-Gaerlan",
-        url: null,
+        url: "https://www.casielle.com/",
         medium: "Painting",
         year: "2025",
         description: "We caught Casielle's show at From Here to Sunday. I had my eye on a painted version of the halo halo — just the glass, no background. I was going to commission it, but M got there first and made it a gift."
@@ -436,10 +458,9 @@
       {
         images: [
           "artwork/mango.avif",
-          // "artwork/mango_secondary.jpg"
         ],
         artist: "Casielle Santos-Gaerlan",
-        url: null,
+        url: "https://www.casielle.com/",
         medium: "Illustration",
         year: "2025",
         description: "My favorite fruit. Mangos anywhere else are fine. Mangos in the Philippines, especially from my uncle's backyard, are something else entirely."
@@ -447,10 +468,9 @@
       {
         images: [
           "artwork/peoplepantry_chinese.webp",
-          // "artwork/peoplepantry_chinese_secondary.jpg"
         ],
         artist: "Lora Hlavsa",
-        url: null,
+        url: "https://www.lorahlavsa.com/",
         medium: "Illustration",
         year: "2021",
         description: "Part of Lora Hlavsa's People's Pantry series. The shrimp chips, oyster sauce, and sesame oil get me every time."
@@ -458,10 +478,9 @@
       {
         images: [
           "artwork/peoplepantry_filipinx.webp",
-          // "artwork/peoplepantry_filipinx_secondary.jpg"
         ],
         artist: "Lora Hlavsa",
-        url: null,
+        url: "https://www.lorahlavsa.com/",
         medium: "Illustration",
         year: "2021",
         description: "Every item on this one is a direct line to my childhood. The only thing missing is Nagaraya."
@@ -469,13 +488,23 @@
       {
         images: [
           "artwork/peoplepantry_japanese.webp",
-          // "artwork/peoplepantry_japanese_secondary.jpg"
         ],
         artist: "Lora Hlavsa",
-        url: null,
+        url: "https://www.lorahlavsa.com/",
         medium: "Illustration",
         year: "2021",
         description: "The Kewpie and the green background. That's it, that's the description."
+      },
+      {
+        images: [
+          "artwork/Mahjong-front.webp",
+          "artwork/Mahjong-back.webp"
+        ],
+        artist: "Lucy Lin",
+        url: "https://luckyrisograph.press/",
+        medium: "Illustration",
+        year: "2025",
+        description: "Not in my collection — this was a gift for my friend L, who teaches mahjong. Felt right."
       }
     ];
     // -------------------------------------------------------
@@ -557,6 +586,13 @@
       lbImgPrev.disabled = currentImg === 0;
       lbImgNext.disabled = currentImg === images.length - 1;
 
+      // Click-to-cycle cursor only when album has multiple images
+      if (images.length > 1) {
+        lbImage.classList.add('has-album');
+      } else {
+        lbImage.classList.remove('has-album');
+      }
+
       // Info
       if (item.url) {
         lbArtist.innerHTML = `<a href="${item.url}" target="_blank" rel="noopener">${item.artist}</a>`;
@@ -567,6 +603,14 @@
       lbYear.textContent = item.year;
       lbDesc.textContent = item.description;
     }
+
+    // Click image to cycle (only when album has multiple images)
+    lbImage.addEventListener('click', () => {
+      const images = ARTWORK[currentWork].images.filter(Boolean);
+      if (images.length <= 1) return;
+      currentImg = (currentImg + 1) % images.length;
+      updateLightbox();
+    });
 
     // Album navigation (within one artwork)
     lbImgPrev.addEventListener('click', () => {
